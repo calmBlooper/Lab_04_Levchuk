@@ -26,6 +26,16 @@ namespace Lab_04_Levchuk.Models
         private Person(string name, string surname, DateTime birthDay) : this(name, surname, string.Empty, birthDay)
         {
         }
+        private Person()
+        {
+            _name = "Generic name";
+            _surname = "Generic surname";
+
+
+            _email = "genericmail@mail.com";
+   
+            _birthDay = DateTime.Now;
+        }
         public String Name
         {
             set => _name = value;

@@ -49,12 +49,12 @@
             <Button Height="50" Width="200" Content="Edit current user" FontSize="18" Margin="5" IsEnabled="{Binding CanEditOrDelete}" Command="{Binding EditButtonCommand}"/>
             <Button Height="50" Width="200" Content="Delete current user" FontSize="18" Margin="5" IsEnabled="{Binding CanEditOrDelete}" Command="{Binding DeleteButtonCommand}"/>
             <Button Height="50" Width="200" Content="Add new user" FontSize="18" Margin="5" IsEnabled="{Binding AddButtonEnabled}" Command="{Binding AddButtonCommand}"/>
-            <Button Height="50" Width="200" Content="Save all users" FontSize="18" Margin="5" />
+            <Button Height="50" Width="200" Content="Save all users" FontSize="18" Margin="5" Command="{Binding SaveButtonCommand}" />
         </StackPanel>
         <Border Grid.Column="2" Grid.RowSpan="5" BorderBrush="Black" 
         BorderThickness="1,0,0,0" Background="{x:Null}" Grid.ZIndex="3" />
         <TextBlock Grid.Column="2" Grid.Row="0" FontSize="18" Text="All users" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="600" Height="27" Margin="0" Background="Azure" />
-        <DataGrid Grid.Row="0" Margin="27" IsReadOnly="True"  AutoGenerateColumns="True" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" MaxColumnWidth="60"  Grid.RowSpan="5" Grid.Column="2" VerticalAlignment="Top" ItemsSource="{Binding UsersList, Mode=TwoWay}"  SelectedItem="{Binding SelectedUser, Mode=TwoWay}"   SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}" Height="500"/>
+        <DataGrid Grid.Row="0" Margin="27" IsReadOnly="False"  AutoGenerateColumns="True"  CanUserResizeRows="False" CanUserSortColumns="False" CanUserDeleteRows="True" CanUserResizeColumns="False" MaxColumnWidth="60"  Grid.RowSpan="5" Grid.Column="2" VerticalAlignment="Top" ItemsSource="{Binding UsersList, Mode=TwoWay}"  SelectedItem="{Binding SelectedUser, Mode=TwoWay}"   SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}" Height="500"/>
         <StackPanel Grid.Row="4" Grid.Column="2" Width="550">
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="Sort by"  Width="40"/>
@@ -67,7 +67,29 @@
                 <Button Content="Chinese Sign" Width="75"/>
                 <Button Content="Is Birthday" Width="66"/>
             </StackPanel>
-            <StackPanel></StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Name" Width="66" Background="Azure"/>
+                <TextBlock Text="Surname" Width="66" Background="Azure"/>
+                <TextBlock Text="Email" Width="40" Background="Azure"/>
+                <TextBlock Text="Birthday" Width="50" Background="Azure"/>
+                <TextBlock Text="IsAdult" Width="50" Background="Azure"/>
+                <TextBlock Text="Sun Sign" Width="50" Background="Azure"/>
+                <TextBlock Text="Chinese Sign" Width="75" Background="Azure"/>
+                <TextBlock Text="Is Birthday" Width="66" Background="Azure"/>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox Text="" Width="66"/>
+                <TextBox Text="" Width="66" />
+                <TextBox Text="" Width="40" />
+                <TextBox Text="" Width="50" />
+                <TextBox Text="" Width="50" />
+                <TextBox Text="" Width="50"/>
+                <TextBox Text="" Width="75" />
+                <TextBox Text="" Width="66" />
+
+            </StackPanel>
+            <Button Content="Filter "  Width="40"/>
         </StackPanel>
         <fa:ImageAwesome Name="_loader"  Icon="Refresh" Grid.ZIndex="4" Grid.Row="1" Grid.Column="0"
                                     Grid.ColumnSpan="3"  Grid.RowSpan="3" Width="50" Height="50" Spin="True" Visibility="{Binding LoaderVisibility, Mode=OneWay}"></fa:ImageAwesome>

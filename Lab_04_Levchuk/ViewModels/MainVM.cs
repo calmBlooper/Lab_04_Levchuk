@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ namespace Lab_04_Levchuk.ViewModels
         private string _name = "", _surname = "", _email = "";
         private DateTime? _chosenDate;
         private int _currentIndex=-1;
-        private String _mode = "Add";
+        private String _mode = "add";
         private List<Person> _usersList=new List<Person>();
         public MainVM()
         {
@@ -33,18 +34,30 @@ namespace Lab_04_Levchuk.ViewModels
        
             DirectoryInfo di = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves");
             FileInfo[] saves = di.GetFiles("*.json");
-        
-            if (saves.Length==0)
+
+            if (saves.Length == 0)
             {
-                for (int i=0;i<50;i++)
+                for (int i = 0; i < 50; i++)
                 {
                     DateTime help = Convert.ToDateTime("05/05/2000");
-             
-                        _usersList.Add(new Person("Corona"+i, "Beer"+i, "corona@beer.com", help.Date));
-              
-                    
+
+                    _usersList.Add(new Person("Corona" + i, "Beer" + i, "corona@beer.com", help.Date));
+
+
                 }
-               // MessageBox.Show(_usersList[5].Surname);
+                // MessageBox.Show(_usersList[5].Surname);
+            }
+            else {
+                try
+                {
+                    string jsonString = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves/Users.json");
+                    _usersList = JsonSerializer.Deserialize<List<Person>>(jsonString);
+                 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             OnPropertyChanged("UsersList");
             //MessageBox.Show("lol");
@@ -52,6 +65,7 @@ namespace Lab_04_Levchuk.ViewModels
             EditButtonCommand = new RelayCommand(o => EditButtonClick("SecondaryButton"));
             DeleteButtonCommand = new RelayCommand(o => DeleteButtonClick("SecondaryButton"));
             AddButtonCommand = new RelayCommand(o => AddButtonClick("SecondaryButton"));
+            SaveButtonCommand=new RelayCommand(o => SaveButtonClick("SecondaryButton"));
             UserInfo = "";
         }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -159,6 +173,7 @@ namespace Lab_04_Levchuk.ViewModels
         public ICommand EditButtonCommand { get; set; }
         public ICommand DeleteButtonCommand { get; set; }
         public ICommand AddButtonCommand { get; set; }
+        public ICommand SaveButtonCommand { get; set; }
         protected virtual void OnPropertyChanged(string propertyName)
         {
 
@@ -188,14 +203,27 @@ namespace Lab_04_Levchuk.ViewModels
         private void DeleteButtonClick(object sender)
         {
             UserInfo = "";
+           // Person buffer = new Person(Name, Surname, Email, ChosenDate.Value);
+            List<Person> kek = new List<Person>();
+            for (int i=0;i<_usersList.Count;i++) if (i!=CurrentIndex) kek.Add(new Person(_usersList[i].Name, _usersList[i].Surname, _usersList[i].Email, _usersList[i].BirthDay));
+            _currentIndex = -1;
+            _usersList = new List<Person>(kek);
+            OnPropertyChanged("UsersList");
             CheckInterface();
             OnPropertyChanged("UserInfo");
             OnPropertyChanged("CanEditOrDelete");
             MessageBox.Show("PeePeePooPoo");
         }
+        private async void SaveButtonClick(object sender)
+        {
+            using (FileStream fs = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves/Users.json"))
+            {
+                await JsonSerializer.SerializeAsync(fs, _usersList);
+            }
+        }
         private void AddButtonClick(object sender)
         {
-            _mode = "Add";
+            _mode = "add";
             CanUseSuite = true;
             OnPropertyChanged("AddButtonEnabled");
             UserInfo = "";
@@ -230,11 +258,33 @@ namespace Lab_04_Levchuk.ViewModels
                     "\nIs birthday today: " + (_userObject.IsBirthday ? "Yes" : "No");
                     CanUseSuite = false;
                     OnPropertyChanged("UserInfo");
-                
+                        if (_mode == "add")
+                        {
+                            Person buffer = new Person(Name, Surname, Email, ChosenDate.Value);
+                              List<Person> kek = new List<Person>();
+                            foreach (Person h in _usersList) kek.Add(new Person(h.Name, h.Surname, h.Email, h.BirthDay));
+                            kek.Add(buffer);
+                            _usersList = new List<Person>(kek);
+                        OnPropertyChanged("UsersList");
+                        // String lll = "";
+                        // foreach (Person h in _usersList) lll += h.Name+"\n";
+                        // MessageBox.Show(lll);
+                    }
+                      else if (_mode == "edit")
+                    {
+                        Person buffer = new Person(Name, Surname, Email, ChosenDate.Value);
+                        List<Person> kek = new List<Person>();
+                        foreach (Person h in _usersList) kek.Add(new Person(h.Name, h.Surname, h.Email, h.BirthDay));
+                        kek[CurrentIndex] = buffer;
+                        _usersList = new List<Person>(kek);
+                        OnPropertyChanged("UsersList");
+                    }
+                   
                     HideLoader();
                     if (_userObject.IsBirthday) MessageBox.Show("He, it`s your birthday today! Congratulations!");
                     CheckInterface();
                     OnPropertyChanged("AddButtonEnabled");
+
                 }
                 catch (Exception ex)
                 {
