@@ -52,7 +52,7 @@ namespace Lab_04_Levchuk.Models
                 BirthdayCorrect(value);
                 _birthDay = value;
             }
-            get => _birthDay;
+            get => _birthDay.Date;
         }
         public bool IsAdult
         {
