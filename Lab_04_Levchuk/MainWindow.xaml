@@ -58,26 +58,16 @@
         <StackPanel Grid.Row="4" Grid.Column="2" Width="550">
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="Sort by"  Width="40"/>
-                <Button Content="Name" Width="66"/>
-                <Button Content="Surname" Width="66"/>
-                <Button Content="Email" Width="40"/>
-                <Button Content="Birthday" Width="50"/>
-                <Button Content="IsAdult" Width="50"/>
-                <Button Content="Sun Sign" Width="50"/>
-                <Button Content="Chinese Sign" Width="75"/>
-                <Button Content="Is Birthday" Width="66"/>
+                <Button Content="Name" Width="66" Command="{Binding NameSortCommand}"/>
+                <Button Content="Surname" Width="66" Command="{Binding SurnameSortCommand}"/>
+                <Button Content="Email" Width="40" Command="{Binding EmailSortCommand}"/>
+                <Button Content="Birthday" Width="50" Command="{Binding BirthdaySortCommand}"/>
+                <Button Content="IsAdult" Width="50" Command="{Binding AdultSortCommand}"/>
+                <Button Content="Sun Sign" Width="50" Command="{Binding SunSignSortCommand}"/>
+                <Button Content="Chinese Sign" Width="75" Command="{Binding ChineseSignSortCommand}"/>
+                <Button Content="Is Birthday" Width="66" Command="{Binding BirthdaySortCommand}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Name" Width="66" Background="Azure"/>
-                <TextBlock Text="Surname" Width="66" Background="Azure"/>
-                <TextBlock Text="Email" Width="40" Background="Azure"/>
-                <TextBlock Text="Birthday" Width="50" Background="Azure"/>
-                <TextBlock Text="IsAdult" Width="50" Background="Azure"/>
-                <TextBlock Text="Sun Sign" Width="50" Background="Azure"/>
-                <TextBlock Text="Chinese Sign" Width="75" Background="Azure"/>
-                <TextBlock Text="Is Birthday" Width="66" Background="Azure"/>
-
-            </StackPanel>
+      
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBox Text="" Width="66"/>
                 <TextBox Text="" Width="66" />

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,13 +25,8 @@ namespace Lab_04_Levchuk.ViewModels
         public MainVM()
         {
           
-         //   FileInfo[] TXTFiles = di.GetFiles("*.xml");
-         //   DirectoryInfo[] kek = di.GetDirectories("LabSaves");
-          //  if (kek.Length == 0)
-          //  {
-            //    MessageBox.Show(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
                 System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves");
-            // };
+
        
             DirectoryInfo di = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves");
             FileInfo[] saves = di.GetFiles("*.json");
@@ -45,28 +41,28 @@ namespace Lab_04_Levchuk.ViewModels
 
 
                 }
-                // MessageBox.Show(_usersList[5].Surname);
             }
             else {
-                try
-                {
-                    string jsonString = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves/Users.json");
+ string jsonString = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "/LabSaves/Users.json");
                     _usersList = JsonSerializer.Deserialize<List<Person>>(jsonString);
-                 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+
+
             }
             OnPropertyChanged("UsersList");
-            //MessageBox.Show("lol");
             ProceedButtonCommand = new RelayCommand(o => MainButtonClick("MainButton"));
             EditButtonCommand = new RelayCommand(o => EditButtonClick("SecondaryButton"));
             DeleteButtonCommand = new RelayCommand(o => DeleteButtonClick("SecondaryButton"));
             AddButtonCommand = new RelayCommand(o => AddButtonClick("SecondaryButton"));
             SaveButtonCommand=new RelayCommand(o => SaveButtonClick("SecondaryButton"));
-            UserInfo = "";
+                   NameSortCommand = new RelayCommand(o => NameButtonClick("SecondaryButton"));
+       SurnameSortCommand=new RelayCommand(o => SurnameButtonClick("SecondaryButton"));
+         EmailSortCommand=new RelayCommand(o => EmailButtonClick("SecondaryButton"));
+        DateSortCommand= new RelayCommand(o => DateButtonClick("SecondaryButton"));
+       ChineseSignSortCommand= new RelayCommand(o => ChineseSignButtonClick("SecondaryButton"));
+         SunSignSortCommand= new RelayCommand(o => SunSignButtonClick("SecondaryButton"));
+        BirthdaySortCommand=new RelayCommand(o => BirthdayButtonClick("SecondaryButton"));
+        AdultSortCommand=new RelayCommand(o => AdultButtonClick("SecondaryButton"));
+        UserInfo = "";
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public bool CanUseSuite = false;
@@ -174,6 +170,14 @@ namespace Lab_04_Levchuk.ViewModels
         public ICommand DeleteButtonCommand { get; set; }
         public ICommand AddButtonCommand { get; set; }
         public ICommand SaveButtonCommand { get; set; }
+        public ICommand NameSortCommand { get; set; }
+        public ICommand SurnameSortCommand { get; set; }
+        public ICommand EmailSortCommand { get; set; }
+        public ICommand DateSortCommand { get; set; }
+        public ICommand ChineseSignSortCommand { get; set; }
+        public ICommand SunSignSortCommand { get; set; }
+        public ICommand BirthdaySortCommand { get; set; }
+        public ICommand AdultSortCommand { get; set; }
         protected virtual void OnPropertyChanged(string propertyName)
         {
 
@@ -198,7 +202,6 @@ namespace Lab_04_Levchuk.ViewModels
             CanUseSuite = true;
             OnPropertyChanged("AddButtonEnabled");
             CheckInterface();
-            MessageBox.Show("PeePeePooPoo");
         }
         private void DeleteButtonClick(object sender)
         {
@@ -212,7 +215,6 @@ namespace Lab_04_Levchuk.ViewModels
             CheckInterface();
             OnPropertyChanged("UserInfo");
             OnPropertyChanged("CanEditOrDelete");
-            MessageBox.Show("PeePeePooPoo");
         }
         private async void SaveButtonClick(object sender)
         {
@@ -266,9 +268,6 @@ namespace Lab_04_Levchuk.ViewModels
                             kek.Add(buffer);
                             _usersList = new List<Person>(kek);
                         OnPropertyChanged("UsersList");
-                        // String lll = "";
-                        // foreach (Person h in _usersList) lll += h.Name+"\n";
-                        // MessageBox.Show(lll);
                     }
                       else if (_mode == "edit")
                     {
@@ -297,6 +296,54 @@ namespace Lab_04_Levchuk.ViewModels
                 }
             });
            
+        }
+        private void NameButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.Name).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void SurnameButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.Surname).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void EmailButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.Email).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void DateButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.BirthDay).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void ChineseSignButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.ChineseSign).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void SunSignButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.SunSign).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void BirthdayButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.IsBirthday).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
+        }
+        private void AdultButtonClick(object sender)
+        {
+            List<Person> SortedList = _usersList.OrderBy(o => o.IsAdult).ToList();
+            _usersList = new List<Person>(SortedList);
+            OnPropertyChanged("UsersList");
         }
         private void ShowLoader()
         {
