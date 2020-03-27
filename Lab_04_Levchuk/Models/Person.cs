@@ -33,7 +33,7 @@ namespace Lab_04_Levchuk.Models
 
 
             _email = "genericmail@mail.com";
-   
+
             _birthDay = DateTime.Now;
         }
         public String Name
